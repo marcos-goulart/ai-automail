@@ -1,0 +1,43 @@
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>AI AutoMail</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+
+  <!-- Splash -->
+  <div id="splash">
+    <div class="logo">
+      ⚡ <span>AI AutoMail</span>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main id="main" class="hidden">
+    
+    <section class="reveal">
+      <h1>Classificação Inteligente de Emails</h1>
+
+      <form id="form">
+        <textarea
+          name="text"
+          placeholder="Digite o conteúdo do email aqui..."
+        ></textarea>
+
+        <input type="file" name="file" accept=".txt,.pdf">
+
+        <button type="submit">Processar Email</button>
+      </form>
+
+      <!-- Resultado -->
+      <div id="result-card" class="card hidden">
+        <h3>Resultado</h3>
+        <pre id="output"></pre>
+        <button id="copy-btn">Copiar resposta</button>
+      </div>
+    </section>
+  </main>
+  
+  <script src="../static/app.js"></script> 
