@@ -1,23 +1,28 @@
-/* ===== Reset ===== */
+/* ===== Resets Globais ===== */
 * {
-  box-sizing: border-box;
+  box-sizing: border-box; /* Garante que padding e border estejam incluídos no cálculo do tamanho total do elemento */
   margin: 0;
   padding: 0;
 }
 
-/* ===== Base ===== */
+/* ===== Configurações de Base ===== */
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: radial-gradient(circle at top, #1e003e, #0b0016);
-  color: #f5f3ff;
+  font-family: "Inter", system-ui, sans-serif;
+  background: radial-gradient(
+    circle at top,
+    #1e003e,
+    #0b0016
+  ); /* Efeito de gradiente radial escuro e moderno no fundo */
+  color: #fcfbffff;
   min-height: 100vh;
 }
 
+/* Classe de auxílio para esconder elementos visualmente */
 .hidden {
   display: none;
 }
 
-/* ===== Splash ===== */
+/* ===== Tela de Splash (Carregamento Inicial) ===== */
 #splash {
   position: fixed;
   inset: 0;
@@ -25,22 +30,31 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 9999; /* Garante que a tela de splash fique acima de todos os outros elementos */
 }
 
+/* Logo animada que pisca com o passar do tempo */
 .logo {
   font-size: 2.2rem;
-  color: orange;
+  color: #ffa500;
   font-weight: 700;
   animation: pulse 1.6s ease-in-out infinite;
 }
 
+/* Animação que suaviza a opacidade e escala da logo no splash */
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: .8; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
 }
 
-/* ===== Layout ===== */
+/* ===== Estrutura de Layout Principal ===== */
 main {
   padding: 60px 20px;
   max-width: 900px;
@@ -50,16 +64,19 @@ main {
 h1 {
   font-size: 2.4rem;
   margin-bottom: 20px;
-  color: #e9d5ff;
+  color: #f8f1ffff;
 }
 
-/* ===== Form ===== */
+/* ===== Formulário de Envio ===== */
 form {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: relative;
+  z-index: 2;
 }
 
+/* Caixa de texto para digitação do e-mail */
 textarea {
   background: #120022;
   border: 1px solid #6d28d9;
@@ -68,79 +85,94 @@ textarea {
   color: #fff;
   font-size: 1rem;
   resize: vertical;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
+/* Realce visual quando a caixa de texto está com foco */
 textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(109,40,217,.35);
+  box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.35);
 }
 
-input[type="file"] {
-  color: #c4b5fd;
-}
-
+/* Botões padrão do sistema com gradiente roxo */
 button {
   align-self: flex-start;
   background: linear-gradient(135deg, #7c3aed, #5b21b6);
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 12px 18px;
   border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
-  transition: transform .2s ease, box-shadow .2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
+/* Feedback visual de elevação ao passar o mouse por cima do botão */
 button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 25px rgba(109,40,217,.35);
+  box-shadow: 0 10px 25px rgba(109, 40, 217, 0.35);
 }
 
-/* ===== Reveal Animation ===== */
+/* ===== Efeito de Revelação com Intersection Observer ===== */
 .reveal {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity .8s ease, transform .8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
+/* Estado ativado quando o elemento entra na área visível da tela */
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ===== Result Card ===== */
+/* ===== Card de Apresentação dos Resultados ===== */
 .card {
-  margin-top: 30px;
+  margin-top: 22px;
   background: linear-gradient(180deg, #160028, #0e001c);
-  border: 1px solid rgba(167,139,250,.35);
+  border: 1px solid rgba(167, 139, 250, 0.35);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 25px 60px rgba(0,0,0,.45);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+  position: relative;
+  z-index: 1;
+  transform-origin: top center;
+  will-change: transform, opacity, clip-path;
+}
+
+.card.result-card-enter {
+  animation: result-slide-down 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .card h3 {
   margin-bottom: 12px;
   font-size: 1.2rem;
-  color: #ddd6fe;
+  color: #f2efffff;
 }
 
+/* Área de texto pré-formatado que exibe o resultado final ou erro */
 #output {
   white-space: pre-wrap;
   overflow-wrap: break-word;
   max-height: 320px;
   overflow-y: auto;
-  font-size: .95rem;
+  font-size: 0.95rem;
   line-height: 1.55;
   margin-bottom: 16px;
 }
 
-/* ===== Copy Button ===== */
+/* ===== Botão de Copiar E-mail ===== */
 #copy-btn {
   background: linear-gradient(135deg, #6d28d9, #8b5cf6);
 }
 
-/* ===== Scrollbar ===== */
+/* ===== Estilização da Barra de Rolagem (Scrollbar) ===== */
 #output::-webkit-scrollbar {
   width: 6px;
 }
@@ -148,4 +180,209 @@ button:hover {
 #output::-webkit-scrollbar-thumb {
   background: #6d28d9;
   border-radius: 10px;
+}
+
+@keyframes result-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-38px) scaleY(0.92);
+    clip-path: inset(0 0 100% 0 round 16px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(4px) scaleY(1);
+    clip-path: inset(0 0 0 0 round 16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+    clip-path: inset(0 0 0 0 round 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.result-card-enter {
+    animation: none;
+  }
+}
+
+/* ===== Alinhamento das Ações do Formulário ===== */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Alinhamento de arquivo e exibição do nome do arquivo selecionado */
+.file-upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Ocultação do input file padrão para possibilitar estilização customizada */
+.file-input-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Novo botão customizado para upload de arquivo */
+.file-upload-btn {
+  background: rgba(109, 40, 217, 0.15);
+  border: 1px dashed #7c3aed;
+  color: #c4b5fd;
+  padding: 11px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.file-upload-btn:hover {
+  background: rgba(109, 40, 217, 0.25);
+  border-color: #a78bfa;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.25);
+}
+
+.file-upload-btn:active {
+  transform: translateY(1px);
+}
+
+/* Texto indicativo do nome do arquivo selecionado */
+.file-name {
+  font-size: 0.85rem;
+  color: #a78bfa;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ajusta o alinhamento vertical e tamanho do botão de envio */
+.form-actions button[type="submit"] {
+  align-self: center;
+  padding: 12px 24px;
+}
+
+/* ===== Painel de Sobreposição de Arraste (Drag and Drop Overlay) ===== */
+.drag-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 0, 22, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+  visibility: hidden;
+}
+
+/* Ativa a tela de arraste suavemente na tela */
+.drag-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* Container de conteúdo do drag overlay com escala elástica */
+.drag-overlay-content {
+  text-align: center;
+  border: 2px dashed #7c3aed;
+  padding: 40px 60px;
+  border-radius: 20px;
+  background: radial-gradient(circle, #1a0035 0%, #0d001a 100%);
+  box-shadow: 0 0 50px rgba(124, 58, 237, 0.3);
+  transform: scale(0.9);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.drag-overlay.active .drag-overlay-content {
+  transform: scale(1);
+}
+
+/* Ícone de download que pula na tela de arraste */
+.drag-icon {
+  font-size: 4.5rem;
+  margin-bottom: 16px;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.drag-overlay h2 {
+  color: #f5f3ff;
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.drag-overlay p {
+  color: #a78bfa;
+  font-size: 1rem;
+}
+
+/* Animação de pulo do ícone do drag and drop */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* ===== Exibição das Mensagens de Erro ===== */
+#output.error {
+  color: #f87171 !important; /* Soft red em contraste com o fundo roxo escuro */
+  font-weight: 500;
+}
+
+/* ===== Animação de Carregamento dos Pontos (...) ===== */
+.dots span {
+  animation: dots-blink 1.4s infinite both;
+  display: inline-block;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Transição de piscar e escala dos pontos em processamento */
+@keyframes dots-blink {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(0.9);
+  }
 }
