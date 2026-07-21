@@ -7,8 +7,14 @@ import os
 import pdfplumber
 import traceback
 
-# Inicializa o cliente da API do OpenAI. A chave é obtida diretamente das variáveis de ambiente do sistema.
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Inicializa o cliente da API, podendo ser um cliente como OpenRouter, Groq, Together AI. Sendo compatível com a API do OpenAI. A chave é obtida diretamente das variáveis de ambiente do sistema.
+client = OpenAI(
+    api_key=os.getenv("API_KEY"),
+    base_url=os.getenv(
+        "BASE_URL",
+        "https://api.openai.com/v1"
+    )
+)
 
 # Instancia o servidor web do FastAPI para gerenciar a aplicação, endpoints e arquivos estáticos.
 app = FastAPI()
@@ -48,7 +54,7 @@ Email:
 {text}
 """
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=os.getenv("MODEL", "gpt-4o-mini"),
         messages=[
             {"role": "user", "content": prompt}
         ]
