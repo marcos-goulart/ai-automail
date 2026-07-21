@@ -17,7 +17,7 @@ O **AI AutoMail** é um sistema inteligente de classificação automática e res
 
 - 📁 **Upload de Arquivos**: Suporta leitura automática de arquivos de texto simples (`.txt`) e documentos PDF (`.pdf`).
 - 🖱️ **Drag and Drop**: Permite arrastar e soltar arquivos diretamente na tela para análise.
-- ⚡ **Classificação Inteligente**: Classifica e-mails em **Produtivo** ou **Improdutivo** utilizando modelos de linguagem avançados (`gpt-4o-mini`).
+- ⚡ **Classificação Inteligente**: Classifica e-mails em **Produtivo** ou **Improdutivo** utilizando modelos de linguagem avançados.
 - ✍️ **Resposta Automática**: Gera uma resposta automática profissional adequada em português.
 - 📋 **Cópia Rápida**: Copia a resposta gerada para a área de transferência com um clique.
 - 🎨 **Interface Premium**: Design com tema escuro (dark purple), animações de entrada, tela de carregamento (splash screen), feedbacks visuais animados para carregamento e controle de erros.
@@ -29,25 +29,62 @@ O **AI AutoMail** é um sistema inteligente de classificação automática e res
 * **Backend**: Python, [FastAPI](https://fastapi.tiangolo.com/), Uvicorn.
 * **Leitura de Arquivos**: [pdfplumber](https://github.com/jsvine/pdfplumber) para extração precisa de texto em PDFs.
 * **Frontend**: HTML5 (Semântico), CSS3 customizado (com animações e blur dinâmico) e Vanilla JavaScript.
-* **IA**: SDK Oficial da [OpenAI](https://github.com/openai/openai-python).
+* **IA**: SDK Oficial da [OpenRouter]([https://github.com/openai/openai-python](https://openrouter.ai/)).
 
 ---
 
-## 🔑 Como Obter a Chave de API da OpenAI (`OPENAI_API_KEY`)
+## 🔑 Configuração da API de IA
 
-Para utilizar o sistema, é necessário ter uma chave de acesso da OpenAI. Siga o passo a passo abaixo para criar a sua:
+Este projeto é compatível com qualquer provedor que utilize o padrão da API da OpenAI. Isso permite utilizar diferentes modelos e serviços de IA apenas alterando as variáveis de ambiente, sem necessidade de modificar o código.
 
-1. **Acesse a plataforma**: Vá para o site oficial [OpenAI Platform](https://platform.openai.com/).
-2. **Crie uma Conta ou Faça Login**: Registre-se na plataforma ou faça o login com sua conta existente.
-3. **Configure o Faturamento (Billing)**:
-   - No menu lateral esquerdo, vá em **Settings** > **Billing**.
-   - Adicione créditos à sua conta (um valor mínimo de $5 USD é suficiente para realizar milhares de requisições utilizando o modelo econômico `gpt-4o-mini`).
-   - *Nota: Contas novas às vezes ganham um saldo gratuito temporário, mas chaves sem saldo/faturamento ativo retornarão erro de quota excedida (MIME/API 429 ou 400).*
-4. **Gere a sua API Key**:
-   - No menu lateral esquerdo, clique em **API Keys**.
-   - Clique no botão **+ Create new secret key**.
-   - Dê um nome para identificar a sua chave (exemplo: `AI-AutoMail`) e clique em **Create secret key**.
-   - **Copie a chave gerada imediatamente!** Ela começa com `sk-...`. Por motivos de segurança, você não poderá visualizá-la novamente após fechar a janela. Guarde-a em um local seguro.
+## 🔌 Provedores Compatíveis
+
+Este projeto foi desenvolvido utilizando o SDK oficial da OpenAI, mas é compatível com qualquer provedor que implemente a API padrão da OpenAI. Isso permite alternar entre diferentes serviços apenas modificando as variáveis de ambiente, sem necessidade de alterar o código-fonte.
+
+| Provedor | Compatível | Observações |
+|----------|:----------:|-------------|
+| 🤖 OpenAI | ✅ | API oficial da OpenAI. |
+| ⚡ Groq | ✅ | Excelente desempenho e plano gratuito para desenvolvimento. |
+| 🌐 OpenRouter | ✅ | Acesso a diversos modelos open source e comerciais através de uma única API. |
+| 🤝 Together AI | ✅ | Plataforma com diversos modelos open source compatíveis. |
+| 🔥 Fireworks AI | ✅ | Serviço otimizado para inferência de modelos de linguagem. |
+| 🧠 DeepInfra | ✅ | Disponibiliza diversos modelos open source através de API compatível. |
+
+### Exemplo de Configuração
+
+Cada provedor possui seu próprio processo para geração da chave de API. Consulte a documentação oficial do serviço escolhido para obter sua chave de acesso.
+
+As variáveis de ambiente utilizadas pelo projeto são:
+
+| Variável | Descrição |
+|----------|-----------|
+| `API_KEY` | Chave de acesso do provedor de IA escolhido. |
+| `BASE_URL` | URL base da API do provedor. |
+| `MODEL` | Modelo de IA que será utilizado pela aplicação. |
+
+### Exemplo utilizando OpenAI
+
+| Variável | Valor |
+|----------|-------|
+| `API_KEY` | `sk-...` |
+| `BASE_URL` | `https://api.openai.com/v1` |
+| `MODEL` | `gpt-4o-mini` |
+
+### Exemplo utilizando Groq
+
+| Variável | Valor |
+|----------|-------|
+| `API_KEY` | `gsk_...` |
+| `BASE_URL` | `https://api.groq.com/openai/v1` |
+| `MODEL` | `llama-3.3-70b-versatile` |
+
+### Exemplo utilizando OpenRouter
+
+| Variável | Valor |
+|----------|-------|
+| `API_KEY` | `sk-or-v1-...` |
+| `BASE_URL` | `https://openrouter.ai/api/v1` |
+| `MODEL` | `deepseek/deepseek-r1-0528:free` |
 
 ---
 
@@ -56,86 +93,124 @@ Para utilizar o sistema, é necessário ter uma chave de acesso da OpenAI. Siga 
 ### Método 1: Executando Diretamente com Python (Recomendado para Desenvolvimento)
 
 #### 1. Clonar o Repositório
-Abra o seu terminal e execute o comando abaixo para clonar o repositório:
+
+Abra o seu terminal e execute:
+
 ```bash
 git clone https://github.com/marcos-goulart/ai-automail.git
 cd ai-automail
 ```
 
 #### 2. Criar e Ativar um Ambiente Virtual (Opcional, mas recomendado)
+
 No Windows (PowerShell):
+
 ```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 ```
+
 No Linux/macOS:
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
 #### 3. Instalar as Dependências
-Com o ambiente ativado, instale as bibliotecas necessárias:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-#### 4. Configurar a Chave da API
-Defina a variável de ambiente com a chave da OpenAI que você copiou no passo anterior.
+#### 4. Configurar as Variáveis de Ambiente
 
-No Windows (PowerShell):
+Substitua os valores abaixo pelas configurações do provedor de IA escolhido.
+
+**Windows (PowerShell)**
+
 ```powershell
-$env:OPENAI_API_KEY="sua_chave_aqui_sk-..."
+$env:API_KEY="sua_chave"
+$env:BASE_URL="https://api.openai.com/v1"
+$env:MODEL="gpt-4o-mini"
 ```
-No Windows (Prompt de Comando - CMD):
+
+**Windows (CMD)**
+
 ```cmd
-set OPENAI_API_KEY=sua_chave_aqui_sk-...
+set API_KEY=sua_chave
+set BASE_URL=https://api.openai.com/v1
+set MODEL=gpt-4o-mini
 ```
-No Linux/macOS:
+
+**Linux/macOS**
+
 ```bash
-export OPENAI_API_KEY="sua_chave_aqui_sk-..."
+export API_KEY="sua_chave"
+export BASE_URL="https://api.openai.com/v1"
+export MODEL="gpt-4o-mini"
 ```
+
+> Basta alterar os valores de `BASE_URL` e `MODEL` para utilizar outro provedor compatível, como Groq ou OpenRouter.
 
 #### 5. Executar o Servidor FastAPI
-Execute a aplicação localmente utilizando o Uvicorn:
+
 ```bash
 uvicorn app.main:app --reload
 ```
-Acesse a aplicação no seu navegador no endereço: **`http://localhost:8000`**
+
+Acesse a aplicação em:
+
+**`http://localhost:8000`**
 
 ---
 
 ### Método 2: Executando com Docker
 
-Se você possui o [Docker](https://www.docker.com/) instalado em sua máquina, pode rodar o sistema de forma isolada em um container.
+#### 1. Clonar o Repositório
 
-#### 1. Clonar o Repositório e Entrar na Pasta
 ```bash
 git clone https://github.com/marcos-goulart/ai-automail.git
 cd ai-automail
 ```
 
 #### 2. Construir a Imagem Docker
+
 ```bash
 docker build -t ai-automail .
 ```
 
-#### 3. Executar o Container Docker
-Substitua `"sua_chave_aqui_sk-..."` pela sua chave gerada da OpenAI:
+#### 3. Executar o Container
+
 ```bash
-docker run -d -p 7860:7860 -e OPENAI_API_KEY="sua_chave_aqui_sk-..." ai-automail
+docker run -d -p 7860:7860 \
+-e API_KEY="sua_chave" \
+-e BASE_URL="https://api.openai.com/v1" \
+-e MODEL="gpt-4o-mini" \
+ai-automail
 ```
 
-Acesse a aplicação no seu navegador no endereço: **`http://localhost:7860`**
+Acesse:
+
+**`http://localhost:7860`**
 
 ---
 
 ## ☁️ Deploy no Hugging Face Spaces
 
-Este projeto foi configurado com suporte direto ao **Hugging Face Spaces** utilizando Docker.
+Este projeto possui suporte nativo ao **Hugging Face Spaces** utilizando Docker.
 
 Para realizar o deploy:
-1. Crie um novo Space no Hugging Face.
-2. Selecione a opção **Docker** como SDK.
-3. Suba os arquivos do repositório para o Space.
-4. Defina o segredo de ambiente `OPENAI_API_KEY` nas configurações do Space (**Settings** > **Variables and Secrets**) para que a aplicação consiga fazer as requisições à OpenAI com segurança.
+
+1. Crie um novo **Space** no Hugging Face.
+2. Selecione **Docker** como SDK.
+3. Faça o upload ou conecte o repositório GitHub ao Space.
+4. Em **Settings → Variables and Secrets**, crie as seguintes variáveis de ambiente:
+
+| Variável | Descrição |
+|----------|-----------|
+| `API_KEY` | Chave do provedor de IA escolhido. |
+| `BASE_URL` | URL base da API do provedor. |
+| `MODEL` | Modelo que será utilizado pela aplicação. |
+
+Após configurar essas variáveis, o Space estará pronto para utilizar qualquer provedor compatível com a API da OpenAI, bastando alterar seus respectivos valores.
